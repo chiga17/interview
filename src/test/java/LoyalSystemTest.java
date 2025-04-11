@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -134,10 +136,15 @@ public class LoyalSystemTest {
         assertEquals(200L, resultBasket.getPurchases().get(1).getFinalPrice());
     }
 
-
-    @Test
-    public void testPrice1KopeikaDiscount49() {
-        doAnswer(i -> 49).when(discountManagerMock).getDiscount(anyLong());
+    @ParameterizedTest
+    @CsvSource(value = {
+        "49, 1",
+        "50, 1",
+        "51, 0",
+        "null, 1"
+    }, nullValues = {"null"})
+    public void testFinalPrice(Integer initialPrice, int finalPrice) {
+        doAnswer(i -> initialPrice).when(discountManagerMock).getDiscount(anyLong());
         LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 1L)
@@ -147,37 +154,7 @@ public class LoyalSystemTest {
         Long buyerId = 10L;
         Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
 
-        assertEquals(1L, resultBasket.getPurchases().get(0).getFinalPrice());
-    }
-
-    @Test
-    public void testPrice1KopeikaDiscount50() {
-        doAnswer(i -> 50).when(discountManagerMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
-        List<Purchase>purchaseList = Arrays.asList(
-            new Purchase(1L, 1L)
-        );
-        Basket basket = new Basket(purchaseList);
-
-        Long buyerId = 10L;
-        Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
-
-        assertEquals(1L, resultBasket.getPurchases().get(0).getFinalPrice());
-    }
-
-    @Test
-    public void testPrice1KopeikaDiscount51() {
-        doAnswer(i -> 51).when(discountManagerMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
-        List<Purchase> purchaseList = Arrays.asList(
-            new Purchase(1L, 1L)
-        );
-        Basket basket = new Basket(purchaseList);
-
-        Long buyerId = 10L;
-        Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
-
-        assertEquals(0L, resultBasket.getPurchases().get(0).getFinalPrice());
+        assertEquals(finalPrice, resultBasket.getPurchases().get(0).getFinalPrice());
     }
 
 }
