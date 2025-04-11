@@ -50,4 +50,6 @@
   * https://javadoc.io/doc/org.mockito/mockito-core/4.11.0/org/mockito/Mockito.html
   * It looks like Mockito 5 main idea is to prepare for more recent JDKs (https://github.com/mockito/mockito/releases/tag/v5.0.0) 
   
+* Lombok
+  * How can we live without it?
  
