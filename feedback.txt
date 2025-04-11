@@ -1,0 +1,43 @@
+Hi Vladimir,
+
+I'm back with feedback on the interview section. You did a good job — you delivered a basic solution, which, while it didn't include answers to the more advanced parts, was functional and covered with tests. Overall, the code quality turned out to be quite decent thanks to your refactoring during the process.
+
+The interviewer highlighted several positives:
+
+✅ Working with code:
+You used code generation.
+The overall code structure was logical, though there were some architectural comments: the discount logic ended up in the DTO (Purchase), whereas it might belong in a service; DiscountManager was implemented as a class, while an interface would be more appropriate; no parameterized tests — you duplicated the verification code.
+
+✅ Testing:
+You covered the main cases, but not all possible ones: for example, there was no check to ensure the discount was applied to the correct user; you didn’t verify mock interactions (e.g., how many times the discount method was called); you added boundary value tests (rounding, nulls) only after discussing them.
+You worked with Mockito, though you had some difficulties mocking primitive types; you encountered an InaccessibleObjectException (you guessed it was due to the Java version, but didn’t fully resolve it).
+
+✅ Working with data:
+You mentioned rounding issues when working with double, but used long (for cents) in the code.
+You added @NotNull in the Purchase constructor, but not everywhere it could have been relevant.
+
+✅ Understanding the task:
+You clarified requirements (e.g., whether all products should have the same discount).
+You proposed reasonable assumptions (e.g., limiting discounts to the 0–100% range).
+
+✅ Refactoring:
+Initially, you hardcoded the discount in LoyaltySystem, but then moved it to DiscountManager.
+You discussed the pros and cons of mutating existing objects vs. creating new ones.
+
+✅ Debugging:
+You encountered errors and tried to understand them (debugging, googling).
+You didn’t always find the solution quickly (e.g., with Mockito), but you showed persistence.
+
+✅ Communication:
+You asked clarifying questions.
+You thought out loud, proposed options (e.g., how to handle null or invalid discounts).
+You were honest about areas where your knowledge was limited (e.g., parameterized tests).
+What could be improved:
+
+Architecture: Better separation of concerns (don’t place business logic in DTOs).
+Tests: Verify not only results, but also interactions (e.g., mock calls).
+Error handling: Use custom exceptions, not just RuntimeException.
+Edge cases: Try to consider them from the start, not only after leading questions.
+You handled the basic tasks well, but there’s room for growth in architecture, testing, and depth of your solutions. The question of grade remains open for now — it would be great if you could reinforce this part of the interview with more details about your experience, as we discussed on the call. Would you be open to spending a bit more time with us?
+
+And if you have any questions about the interview or the feedback — happy to discuss!

@@ -1,4 +1,5 @@
-import com.sun.istack.internal.NotNull;
+import java.util.Objects;
+import jakarta.annotation.Nonnull;
 
 public class Purchase {
 
@@ -6,9 +7,9 @@ public class Purchase {
     private Long price; // price in kopeiki
     private Long finalPrice;
 
-    public Purchase(Long id, @NotNull Long price) {
+    public Purchase(Long id, @Nonnull Long price) {
         this.id = id;
-        this.price = price;
+        this.price = Objects.requireNonNull(price, "Price cannot be null");;
     }
 
     public void applyDiscount(Integer discount) {
