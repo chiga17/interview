@@ -23,11 +23,19 @@ public class LoyalSystem {
         }
     }
 
+    public Long getDiscount(Long initialPrice, Integer discount) {
+        Long finalPrice = Math.round(initialPrice*(100-discount)/100.);
+        if (finalPrice == 0) {
+            // TODO: notify ...
+        }
+        return finalPrice;
+    }
+
     // buyerId and basket should not be null
     public Basket applyDiscounts(Long buyerId, Basket basket) {
         Integer discount = getDiscount(buyerId);
         for (Purchase purchase : basket.getPurchases()) {
-            purchase.applyDiscount(discount);
+            purchase.setFinalPrice(getDiscount(purchase.getPrice(), discount));
         }
         return basket;
     }
