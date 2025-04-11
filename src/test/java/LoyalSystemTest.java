@@ -18,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 public class LoyalSystemTest {
 
     @Mock
-    DiscountManager discountManagerMock;
+    IDiscountService discountServiceMock;
 
 
     @BeforeEach
@@ -28,8 +28,8 @@ public class LoyalSystemTest {
 
     @Test
     public void testBasic(){
-        doAnswer(i -> 10).when(discountManagerMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
+        doAnswer(i -> 10).when(discountServiceMock).getDiscount(anyLong());
+        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -45,8 +45,8 @@ public class LoyalSystemTest {
 
     @Test
     public void testCannotGetDiscount() {
-        Mockito.doThrow(new RuntimeException("...")).when(discountManagerMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
+        Mockito.doThrow(new RuntimeException("...")).when(discountServiceMock).getDiscount(anyLong());
+        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -86,8 +86,8 @@ public class LoyalSystemTest {
 
     @Test
     public void testNegativeDiscount() {
-        doAnswer(i -> -1).when(discountManagerMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
+        doAnswer(i -> -1).when(discountServiceMock).getDiscount(anyLong());
+        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -121,8 +121,8 @@ public class LoyalSystemTest {
 
     @Test
     public void testNullDiscount() {
-        doAnswer(i -> null).when(discountManagerMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
+        doAnswer(i -> null).when(discountServiceMock).getDiscount(anyLong());
+        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -144,8 +144,8 @@ public class LoyalSystemTest {
         "null, 1"
     }, nullValues = {"null"})
     public void testFinalPrice(Integer initialPrice, int finalPrice) {
-        doAnswer(i -> initialPrice).when(discountManagerMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountManagerMock);
+        doAnswer(i -> initialPrice).when(discountServiceMock).getDiscount(anyLong());
+        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 1L)
         );

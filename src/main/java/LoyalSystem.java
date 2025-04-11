@@ -1,15 +1,15 @@
-import java.util.List;
 
 public class LoyalSystem {
-    private DiscountManager discountManager;
 
-    public LoyalSystem(DiscountManager discountManager) {
-        this.discountManager = discountManager;
+    private IDiscountService discountService;
+
+    public LoyalSystem(IDiscountService discountService) {
+        this.discountService = discountService;
     }
 
     private Integer getDiscount(Long buyerId) {
         try {
-            Integer discount = discountManager.getDiscount(buyerId); // TODO: retries
+            Integer discount = discountService.getDiscount(buyerId); // TODO: retries
             if (discount == null) {
                 return 0;
             }
