@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-public class LoyalSystemTest {
+public class LoyaltyServiceTest {
 
     @Mock
     IDiscountService discountServiceMock;
@@ -32,7 +32,7 @@ public class LoyalSystemTest {
     @Test
     public void testBasic(){
         doAnswer(i -> 10).when(discountServiceMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
+        LoyaltyService loyaltyService = new LoyaltyService(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -40,7 +40,7 @@ public class LoyalSystemTest {
         Basket basket = new Basket(purchaseList);
 
         Long buyerId = 10L;
-        Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
+        Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
 
         verify(discountServiceMock, times(1)).getDiscount(buyerId);
 
@@ -51,7 +51,7 @@ public class LoyalSystemTest {
     @Test
     public void testCannotGetDiscount() {
         Mockito.doThrow(new RuntimeException("...")).when(discountServiceMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
+        LoyaltyService loyaltyService = new LoyaltyService(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -60,7 +60,7 @@ public class LoyalSystemTest {
         Long buyerId = 10L;
 
         try {
-            Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
+            Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
             fail("...");
         } catch (Exception e) {
             verify(discountServiceMock, times(1)).getDiscount(buyerId);
@@ -93,7 +93,7 @@ public class LoyalSystemTest {
     @Test
     public void testNegativeDiscount() {
         doAnswer(i -> -1).when(discountServiceMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
+        LoyaltyService loyaltyService = new LoyaltyService(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -102,7 +102,7 @@ public class LoyalSystemTest {
 
         Long buyerId = 10L;
         try {
-            Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
+            Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
             fail("Expected exception ...");
         } catch (Exception e) {
             verify(discountServiceMock, times(1)).getDiscount(buyerId);
@@ -129,7 +129,7 @@ public class LoyalSystemTest {
     @Test
     public void testNullDiscount() {
         doAnswer(i -> null).when(discountServiceMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
+        LoyaltyService loyaltyService = new LoyaltyService(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 100L),
             new Purchase(2L, 200L)
@@ -137,7 +137,7 @@ public class LoyalSystemTest {
         Basket basket = new Basket(purchaseList);
 
         Long buyerId = 10L;
-        Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
+        Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
 
         assertEquals(100L, resultBasket.getPurchases().get(0).getFinalPrice());
         assertEquals(200L, resultBasket.getPurchases().get(1).getFinalPrice());
@@ -153,14 +153,14 @@ public class LoyalSystemTest {
     }, nullValues = {"null"})
     public void testFinalPrice(Integer initialPrice, int finalPrice) {
         doAnswer(i -> initialPrice).when(discountServiceMock).getDiscount(anyLong());
-        LoyalSystem loyalSystem = new LoyalSystem(discountServiceMock);
+        LoyaltyService loyaltyService = new LoyaltyService(discountServiceMock);
         List<Purchase> purchaseList = Arrays.asList(
             new Purchase(1L, 1L)
         );
         Basket basket = new Basket(purchaseList);
 
         Long buyerId = 10L;
-        Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
+        Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
 
         assertEquals(finalPrice, resultBasket.getPurchases().get(0).getFinalPrice());
         verify(discountServiceMock, times(1)).getDiscount(buyerId);

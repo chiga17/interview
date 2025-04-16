@@ -1,9 +1,9 @@
 
-public class LoyalSystem {
+public class LoyaltyService {
 
     private IDiscountService discountService;
 
-    public LoyalSystem(IDiscountService discountService) {
+    public LoyaltyService(IDiscountService discountService) {
         this.discountService = discountService;
     }
 
