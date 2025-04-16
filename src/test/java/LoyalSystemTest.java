@@ -1,9 +1,12 @@
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +42,8 @@ public class LoyalSystemTest {
         Long buyerId = 10L;
         Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
 
+        verify(discountServiceMock, times(1)).getDiscount(buyerId);
+
         assertEquals(90L, resultBasket.getPurchases().get(0).getFinalPrice());
         assertEquals(180L, resultBasket.getPurchases().get(1).getFinalPrice());
     }
@@ -58,8 +63,9 @@ public class LoyalSystemTest {
             Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
             fail("...");
         } catch (Exception e) {
-            assertTrue(e instanceof RuntimeException);
-            e.getMessage().equals("Cannot do at this time");
+            verify(discountServiceMock, times(1)).getDiscount(buyerId);
+            assertInstanceOf(RuntimeException.class, e);
+            assertEquals("Cannot do at this time", e.getMessage());
         }
     }
 
@@ -99,8 +105,9 @@ public class LoyalSystemTest {
             Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
             fail("Expected exception ...");
         } catch (Exception e) {
-            assertTrue(e instanceof RuntimeException);
-            e.getMessage().equals("Wrong discount value");
+            verify(discountServiceMock, times(1)).getDiscount(buyerId);
+            assertInstanceOf(RuntimeException.class, e);
+            assertEquals("Cannot do at this time", e.getMessage());
         }
     }
 
@@ -134,6 +141,7 @@ public class LoyalSystemTest {
 
         assertEquals(100L, resultBasket.getPurchases().get(0).getFinalPrice());
         assertEquals(200L, resultBasket.getPurchases().get(1).getFinalPrice());
+        verify(discountServiceMock, times(1)).getDiscount(buyerId);
     }
 
     @ParameterizedTest
@@ -155,6 +163,7 @@ public class LoyalSystemTest {
         Basket resultBasket = loyalSystem.applyDiscounts(buyerId, basket);
 
         assertEquals(finalPrice, resultBasket.getPurchases().get(0).getFinalPrice());
+        verify(discountServiceMock, times(1)).getDiscount(buyerId);
     }
 
 }

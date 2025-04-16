@@ -8,7 +8,7 @@ public class Purchase {
     private Long id;
     @Getter
     private Long price; // price in kopeiki
-    @Setter
+    @Setter @Getter
     private Long finalPrice;
 
     public Purchase(Long id, @Nonnull Long price) {
@@ -16,7 +16,4 @@ public class Purchase {
         this.price = Objects.requireNonNull(price, "Price cannot be null");;
     }
 
-    public long getFinalPrice() {
-        return finalPrice;
-    }
 }

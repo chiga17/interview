@@ -5,9 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>Impacta</groupId>
-    <artifactId>UnitTesting</artifactId>
+    <artifactId>Interview</artifactId>
     <version>1.0-SNAPSHOT</version>
-
 
 
     <properties>
