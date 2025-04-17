@@ -64,7 +64,7 @@ public class LoyaltyServiceTest {
             fail("...");
         } catch (Exception e) {
             verify(discountServiceMock, times(1)).getDiscount(buyerId);
-            assertInstanceOf(RuntimeException.class, e);
+            assertInstanceOf(LoyaltyServiceException.class, e);
             assertEquals("Cannot do at this time", e.getMessage());
         }
     }
@@ -106,7 +106,7 @@ public class LoyaltyServiceTest {
             fail("Expected exception ...");
         } catch (Exception e) {
             verify(discountServiceMock, times(1)).getDiscount(buyerId);
-            assertInstanceOf(RuntimeException.class, e);
+            assertInstanceOf(LoyaltyServiceException.class, e);
             assertEquals("Cannot do at this time", e.getMessage());
         }
     }

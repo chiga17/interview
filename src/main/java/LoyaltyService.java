@@ -14,12 +14,12 @@ public class LoyaltyService {
                 return 0;
             }
             if (discount < 0 || discount > 100) {
-                throw new RuntimeException("Wrong discount value");
+                throw new LoyaltyServiceException("Wrong discount value");
                 // TODO: notify discount team about wrong discount value for buyerId
             }
             return discount;
         } catch (Exception e) {
-            throw new RuntimeException("Cannot do at this time");
+            throw new LoyaltyServiceException("Cannot do at this time");
         }
     }
 
