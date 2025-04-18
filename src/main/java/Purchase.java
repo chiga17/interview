@@ -1,5 +1,3 @@
-import java.util.Objects;
-import jakarta.annotation.Nonnull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +9,9 @@ public class Purchase {
     @Setter @Getter
     private Long finalPrice;
 
-    public Purchase(Long id, @Nonnull Long price) {
+    public Purchase(long id, long price) {
         this.id = id;
-        this.price = Objects.requireNonNull(price, "Price cannot be null");;
+        this.price = price;
     }
 
 }

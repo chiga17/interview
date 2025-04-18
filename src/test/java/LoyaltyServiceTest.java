@@ -1,7 +1,6 @@
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
@@ -39,7 +38,7 @@ public class LoyaltyServiceTest {
         );
         Basket basket = new Basket(purchaseList);
 
-        Long buyerId = 10L;
+        long buyerId = 10L;
         Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
 
         verify(discountServiceMock, times(1)).getDiscount(buyerId);
@@ -57,7 +56,7 @@ public class LoyaltyServiceTest {
             new Purchase(2L, 200L)
         );
         Basket basket = new Basket(purchaseList);
-        Long buyerId = 10L;
+        long buyerId = 10L;
 
         try {
             Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
@@ -76,6 +75,14 @@ public class LoyaltyServiceTest {
 
     @Test
     public void testNullBasket() {
+        LoyaltyService loyaltyService = new LoyaltyService(discountServiceMock);
+        long buyerId = 10L;
+        try {
+            Basket resultBasket = loyaltyService.applyDiscounts(buyerId, null);
+            fail("Expected exception ...");
+        } catch (Exception e) {
+            assertInstanceOf(NullPointerException.class, e);
+        }
 
     }
 
@@ -100,7 +107,7 @@ public class LoyaltyServiceTest {
         );
         Basket basket = new Basket(purchaseList);
 
-        Long buyerId = 10L;
+        long buyerId = 10L;
         try {
             Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
             fail("Expected exception ...");
@@ -136,7 +143,7 @@ public class LoyaltyServiceTest {
         );
         Basket basket = new Basket(purchaseList);
 
-        Long buyerId = 10L;
+        long buyerId = 10L;
         Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
 
         assertEquals(100L, resultBasket.getPurchases().get(0).getFinalPrice());
@@ -159,7 +166,7 @@ public class LoyaltyServiceTest {
         );
         Basket basket = new Basket(purchaseList);
 
-        Long buyerId = 10L;
+        long buyerId = 10L;
         Basket resultBasket = loyaltyService.applyDiscounts(buyerId, basket);
 
         assertEquals(finalPrice, resultBasket.getPurchases().get(0).getFinalPrice());

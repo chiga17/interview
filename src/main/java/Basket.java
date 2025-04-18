@@ -1,14 +1,13 @@
+import jakarta.annotation.Nonnull;
 import java.util.List;
+import lombok.Getter;
 
+@Getter
 public class Basket {
 
-    private List<Purchase> purchases;
+    private final List<Purchase> purchases;
 
-    public Basket(List<Purchase> purchases) {
+    public Basket(@Nonnull List<Purchase> purchases) {
         this.purchases = purchases;
-    }
-
-    public List<Purchase> getPurchases() {
-        return purchases;
     }
 }

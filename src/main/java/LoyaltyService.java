@@ -1,3 +1,5 @@
+import jakarta.annotation.Nonnull;
+import java.util.Objects;
 
 public class LoyaltyService {
 
@@ -7,7 +9,7 @@ public class LoyaltyService {
         this.discountService = discountService;
     }
 
-    private Integer getDiscount(Long buyerId) {
+    private Integer getDiscount(long buyerId) {
         try {
             Integer discount = discountService.getDiscount(buyerId); // TODO: retries
             if (discount == null) {
@@ -23,17 +25,17 @@ public class LoyaltyService {
         }
     }
 
-    public Long getDiscount(Long initialPrice, Integer discount) {
-        Long finalPrice = Math.round(initialPrice*(100-discount)/100.);
+    public Long getDiscount(long initialPrice, int discount) {
+        long finalPrice = Math.round(initialPrice*(100-discount)/100.);
         if (finalPrice == 0) {
             // TODO: notify ...
         }
         return finalPrice;
     }
 
-    // buyerId and basket should not be null
-    public Basket applyDiscounts(Long buyerId, Basket basket) {
-        Integer discount = getDiscount(buyerId);
+    public Basket applyDiscounts(long buyerId, @Nonnull Basket basket) {
+        Objects.requireNonNull(basket, "Basket cannot be null");
+        int discount = getDiscount(buyerId);
         for (Purchase purchase : basket.getPurchases()) {
             purchase.setFinalPrice(getDiscount(purchase.getPrice(), discount));
         }
